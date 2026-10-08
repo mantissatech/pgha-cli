@@ -1,0 +1,17 @@
+Package: pgha
+Version: 0.1.0
+Architecture: arm64
+Bugs: https://github.com/mantissatech/pgha-cli/issues
+Maintainer: Mantissa Tech <noreply@mantissatech.com>
+Installed-Size: 12032
+Depends: openssh-client
+Filename: pool/main/p/pgha/pgha_0.1.0_arm64.deb
+Size: 4560782
+MD5sum: e1e511f25e2a1ead66a34b851c4c6cad
+SHA1: ee0100a49c9c4ff06e5b7eb63cc720dfd70a675b
+SHA256: 6bb73660c062cb3ab323424e9ad89ab6125418d7a0734e088e9d35554d7d5c59
+Section: utils
+Priority: optional
+Homepage: https://github.com/mantissatech/pgha-cli
+Description: Highly available Postgres on Hetzner Cloud
+

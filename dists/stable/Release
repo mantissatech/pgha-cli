@@ -1,0 +1,32 @@
+Architectures: amd64 arm64
+Codename: stable
+Components: main
+Date: Thu, 08 Oct 2026 08:50:37 +0000
+Description: pgha
+Label: pgha
+Origin: pgha
+Suite: stable
+MD5Sum:
+ a41b2b6b3f80c2142a9722ff18ef125e              156 Release
+ b540dd25c9afaf33854dbc0fd216f4bf              567 main/binary-amd64/Packages
+ cd4d03514934d9b0f52d3ea36325ba96              399 main/binary-amd64/Packages.gz
+ cd157b38f9c8a14f625c48f110b45621              567 main/binary-arm64/Packages
+ cb173a5cd5109c2c88095d2230fe5120              398 main/binary-arm64/Packages.gz
+SHA1:
+ b16fb9420d1f894d49892ed1163489e0ea5f7b91              156 Release
+ 8235f6b489240705d1edfdb335db884668d88033              567 main/binary-amd64/Packages
+ 133cae23f0d354c3f90656f4f76ad325e2375c10              399 main/binary-amd64/Packages.gz
+ 8ce26d6048cf234b76dfea8415267a593d0eb271              567 main/binary-arm64/Packages
+ 59c81f1255f51153f23b44f20d7ad946915f6e1c              398 main/binary-arm64/Packages.gz
+SHA256:
+ 4730ba7515b12e70cdca29d8837e51bef992409716312d6e85009538214e0323              156 Release
+ e6ccadbb19fc8e8c233b283f83dba4c5ae550165cb2f120265cf5c2d109e60d7              567 main/binary-amd64/Packages
+ 6312e9a9ddc7ecb439973642e3ee6942eccc4619c4bf5027eb08d69107b8bb9c              399 main/binary-amd64/Packages.gz
+ ce1d5f4e84eadb4dd8f30a9c884b934cb64ad6827c1eb79e6d88fd0fb1f0bc72              567 main/binary-arm64/Packages
+ 6ec16430b82ebe694e12019cca10075cef516821eae1399bafc6a3e0610c4bc9              398 main/binary-arm64/Packages.gz
+SHA512:
+ 558f29b01e25f70eccfaaa913970fedfcf407e8fab3da0540111d0df3c54eba5a59bd86da21aa5eecafdd5126f3ee7dcb198852f6831182c3bda521a9de22e6b              156 Release
+ af2597fcd6fc4548970ab8494716938974489172354945db206201f449b7112f26a18f1a0097964b7468ebdfd09d26b38b672fb915d622fa5e2debb2d77d9dc7              567 main/binary-amd64/Packages
+ 80e3a0ed8ad15724a4e0d22c5bf5a2c253e245b4984e256ebc6768bea395f8dbd14c595f26b519fce0ac31a610a60dea01f116eb370d6f38851b8da412cd5a1f              399 main/binary-amd64/Packages.gz
+ f9c5d1ec965f17980127147be79c66fab063ca922bdce8cf2e3a2f8e0d46ad1aeffbd77eda221a05f2d864dc94c4b359fa778ff6a4380fe928b316d727f7a331              567 main/binary-arm64/Packages
+ 1e5ba359748b2396019ac8400672be46ea74d689071b3f8225648d10be729bf7683aeb2f8d3b6187f2a14169f90844910befbe85fc18a9153548d0cabb204d98              398 main/binary-arm64/Packages.gz
