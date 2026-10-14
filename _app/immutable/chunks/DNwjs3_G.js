@@ -1,0 +1,1 @@
+var e=`https://github.com/mantissatech/pgha-cli`,t=`${e}/releases`;export{e as n,t};

@@ -1,0 +1,1 @@
+import{t as e}from"./B9mk8Oxc.js";var t=e(`/`).replace(/\/$/,``);export{t};
