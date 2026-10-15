@@ -1,15 +1,15 @@
 Package: pgha
-Version: 0.1.7
+Version: 0.1.8
 Architecture: arm64
 Bugs: https://github.com/mantissatech/pgha-cli/issues
 Maintainer: Mantissa Tech <noreply@mantissatech.com>
 Installed-Size: 18112
 Depends: openssh-client
-Filename: pool/main/p/pgha/pgha_0.1.7_arm64.deb
-Size: 7319940
-MD5sum: e3cb00e1edacb106a44718471724064d
-SHA1: bda1443047414642aad30a8617615cfc9f697b40
-SHA256: b0529ea02fd68d721c55e6bd73c11c8113912985e2f560f63b97bf599fe34b5d
+Filename: pool/main/p/pgha/pgha_0.1.8_arm64.deb
+Size: 7331970
+MD5sum: e2330f61972d2de9dd2ec33f2e279042
+SHA1: 50bbf23f960de5e1cbbbe0ae20e643f07ea9bdfe
+SHA256: 6d13593fde79fe2f82423218587e8461c2e3447ace843c61fe6a48303dad915e
 Section: utils
 Priority: optional
 Homepage: https://github.com/mantissatech/pgha-cli
