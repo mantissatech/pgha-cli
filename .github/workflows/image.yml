@@ -1,0 +1,151 @@
+name: Container image
+
+# Builds ghcr.io/mantissatech/pgha-cli from the released Linux binaries.
+# - A published release: build linux/amd64 and linux/arm64 and push.
+#   A stable tag v1.2.3 gets 1.2.3 and 1.2, and latest when it is the
+#   newest release. A prerelease gets only its own tag.
+# - Run workflow: (re)publish the image for one release tag.
+# - Pull requests: build the newest release and push nothing.
+#
+# Uses only GITHUB_TOKEN. The package is linked to this public
+# repository by the org.opencontainers.image.source label.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish, like v0.1.11"
+        required: true
+        type: string
+  pull_request:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - docker/**
+      - .github/workflows/image.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: image-${{ github.event.release.tag_name || inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/mantissatech/pgha-cli
+
+jobs:
+  image:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Pick the release
+        id: rel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          newest=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName -q .tagName)
+          case "$EVENT" in
+            release) tag="$RELEASE_TAG" ;;
+            workflow_dispatch) tag="$INPUT_TAG" ;;
+            *) tag="$newest" ;;
+          esac
+          if ! [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Not a release tag: $tag"
+            exit 1
+          fi
+          push=false
+          [ "$EVENT" != pull_request ] && push=true
+          latest=false
+          [ "$tag" = "$newest" ] && latest=true
+          {
+            echo "tag=$tag"
+            echo "push=$push"
+            echo "latest=$latest"
+          } >> "$GITHUB_OUTPUT"
+      - name: Wait for the release files
+        # GoReleaser publishes the release before it uploads the files.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.rel.outputs.tag }}
+        run: |
+          set -euo pipefail
+          need="checksums.txt pgha_linux_amd64.tar.gz pgha_linux_arm64.tar.gz"
+          for _ in $(seq 1 60); do
+            have=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets -q '.assets[].name')
+            missing=""
+            for f in $need; do
+              grep -qx "$f" <<<"$have" || missing="$missing $f"
+            done
+            if [ -z "$missing" ]; then
+              echo "All files are on $TAG."
+              exit 0
+            fi
+            echo "Waiting for:$missing"
+            sleep 20
+          done
+          echo "::error::Release $TAG is missing:$missing"
+          exit 1
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+      - name: Tags and labels
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: ${{ env.IMAGE }}
+          flavor: |
+            latest=${{ steps.rel.outputs.latest }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.rel.outputs.tag }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.rel.outputs.tag }}
+          labels: |
+            org.opencontainers.image.title=pgha
+            org.opencontainers.image.description=Highly available Postgres on Hetzner Cloud: CLI and web console
+            org.opencontainers.image.source=https://github.com/mantissatech/pgha-cli
+            org.opencontainers.image.url=https://mantissatech.github.io/pgha-cli/
+            org.opencontainers.image.documentation=https://mantissatech.github.io/pgha-cli/docs/container-image/
+            org.opencontainers.image.vendor=Mantissa Tech
+          annotations: |
+            org.opencontainers.image.description=Highly available Postgres on Hetzner Cloud: CLI and web console
+            org.opencontainers.image.source=https://github.com/mantissatech/pgha-cli
+      - name: Log in to GitHub Container Registry
+        if: steps.rel.outputs.push == 'true'
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build (and push)
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: ${{ steps.rel.outputs.push == 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          build-args: |
+            VERSION=${{ steps.rel.outputs.tag }}
+      - name: Smoke test
+        env:
+          TAG: ${{ steps.rel.outputs.tag }}
+        run: |
+          docker buildx build --load --platform linux/amd64 -t pgha:smoke \
+            --build-arg VERSION="$TAG" .
+          docker run --rm pgha:smoke --version
+          docker run --rm pgha:smoke estimate --help >/dev/null
+          docker run --rm --entrypoint ssh pgha:smoke -V
