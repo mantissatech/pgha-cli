@@ -1,15 +1,15 @@
 Package: pgha
-Version: 0.1.11
+Version: 0.1.12
 Architecture: amd64
 Bugs: https://github.com/mantissatech/pgha-cli/issues
 Maintainer: Mantissa Tech <noreply@mantissatech.com>
-Installed-Size: 24196
+Installed-Size: 24264
 Depends: openssh-client
-Filename: pool/main/p/pgha/pgha_0.1.11_amd64.deb
-Size: 9408726
-MD5sum: a387114b3ac26361c8551fa85c94c38f
-SHA1: ca12bd7a667a0fcc294050f1a92702219d7c02e8
-SHA256: 5294120678b61346502b7c91ce0ee44d0891d11407a3abcc7aee0190c958cc75
+Filename: pool/main/p/pgha/pgha_0.1.12_amd64.deb
+Size: 9436176
+MD5sum: 0170ee31b2e2e7695f69b9ed74903542
+SHA1: a2244928fdc7ed69169c0a2c5e508fd596151619
+SHA256: e76648f442e61a04f93ffa8617e84020d17c11b7c816235095256632cdcbe7a9
 Section: utils
 Priority: optional
 Homepage: https://github.com/mantissatech/pgha-cli
