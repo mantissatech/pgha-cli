@@ -31,6 +31,8 @@ if [ ! -f "$key" ]; then
 		printf '%s\n' "$PGHA_SSH_PRIVATE_KEY" >"$key"
 	else
 		ssh-keygen -q -t ed25519 -N '' -C "pgha@container" -f "$key"
+		# The SSH check warns: this key exists only in this volume
+		: >"$key.generated"
 		echo "pgha: made a new SSH key in $key" >&2
 	fi
 fi
