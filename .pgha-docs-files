@@ -69,6 +69,8 @@ docs/project-databases/__data.json
 docs/project-databases/index.html
 docs/quick-start/__data.json
 docs/quick-start/index.html
+docs/redis/__data.json
+docs/redis/index.html
 docs/references/__data.json
 docs/references/index.html
 docs/requirements/__data.json
