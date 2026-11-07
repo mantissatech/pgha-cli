@@ -42,6 +42,8 @@ docs/architecture/__data.json
 docs/architecture/index.html
 docs/backups/__data.json
 docs/backups/index.html
+docs/clickhouse/__data.json
+docs/clickhouse/index.html
 docs/cloud-resources/__data.json
 docs/cloud-resources/index.html
 docs/code-structure/__data.json
